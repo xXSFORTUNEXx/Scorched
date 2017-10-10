@@ -27,7 +27,9 @@ namespace Client
                     case NetIncomingMessageType.Data:
                         switch (incMSG.ReadByte())
                         {
-
+                            case (byte)Packet.Connection:
+                                WriteLine("Connected to server!");
+                                break;
                         }
                         break;
                 }
