@@ -51,26 +51,29 @@ namespace Client
 
         private void G_Login_Clicked(ControlBase sender, ClickedEventArgs arguments)
         {
-            g_MainMenu.Close();
-            g_LoginMenu = new Window(sender.GetCanvas());
-            g_LoginMenu.Title = "Login Menu";
-            g_LoginMenu.Size = new Gwen.Size(150, 300);
-            g_LoginMenu.StartPosition = StartPosition.CenterCanvas;
+            LoginMenu(sender);
         }
 
         private void LoginMenu(ControlBase control)
         {
             g_LoginMenu = new Window(control.GetCanvas());
             g_LoginMenu.Title = "Login Menu";
-            g_LoginMenu.Size = new Gwen.Size(150, 300);
+            g_LoginMenu.Size = new Gwen.Size(200, 350);
             g_LoginMenu.StartPosition = StartPosition.CenterCanvas;
 
-            VerticalLayout layout = new VerticalLayout(g_MainMenu);
+            VerticalLayout layout = new VerticalLayout(g_LoginMenu);
             layout.HorizontalAlignment = Gwen.HorizontalAlignment.Center;
             layout.Padding = Gwen.Padding.Five;
 
+            g_UserL = new Label(layout);
+            g_UserL.Margin = Gwen.Margin.Three;
+            g_UserL.Size = new Gwen.Size(150, 15);
+            g_UserL.Text = "Username:";
+            g_UserL.Alignment = Gwen.Alignment.Left;
+
             g_User = new TextBox(layout);
             g_User.Margin = Gwen.Margin.Six;
+            g_User.Size = new Gwen.Size(150, 25);
         }
     }
 }
