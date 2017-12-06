@@ -126,7 +126,7 @@ namespace Client
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             m_Canvas.RenderCanvas();
 

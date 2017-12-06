@@ -11,6 +11,14 @@ namespace Client
         Button g_Register;
         Button g_Exit;
 
+        Window g_LoginMenu;
+        Label g_UserL;
+        Label g_PassL;
+        TextBox g_User;
+        TextBox g_Pass;
+        CheckBox g_Remem;
+        
+
         public UserInterface() {}
 
         public void InitMainMenu(Canvas m_Canvas)
@@ -28,6 +36,7 @@ namespace Client
             g_Login.Margin = Gwen.Margin.Six;
             g_Login.Size = new Gwen.Size(100, 25);
             g_Login.Text = "Login";
+            g_Login.Clicked += G_Login_Clicked;
 
             g_Register = new Button(layout);
             g_Register.Margin = Gwen.Margin.Six;
@@ -38,6 +47,30 @@ namespace Client
             g_Exit.Margin = Gwen.Margin.Six;
             g_Exit.Size = new Gwen.Size(100, 25);
             g_Exit.Text = "Exit";
+        }
+
+        private void G_Login_Clicked(ControlBase sender, ClickedEventArgs arguments)
+        {
+            g_MainMenu.Close();
+            g_LoginMenu = new Window(sender.GetCanvas());
+            g_LoginMenu.Title = "Login Menu";
+            g_LoginMenu.Size = new Gwen.Size(150, 300);
+            g_LoginMenu.StartPosition = StartPosition.CenterCanvas;
+        }
+
+        private void LoginMenu(ControlBase control)
+        {
+            g_LoginMenu = new Window(control.GetCanvas());
+            g_LoginMenu.Title = "Login Menu";
+            g_LoginMenu.Size = new Gwen.Size(150, 300);
+            g_LoginMenu.StartPosition = StartPosition.CenterCanvas;
+
+            VerticalLayout layout = new VerticalLayout(g_MainMenu);
+            layout.HorizontalAlignment = Gwen.HorizontalAlignment.Center;
+            layout.Padding = Gwen.Padding.Five;
+
+            g_User = new TextBox(layout);
+            g_User.Margin = Gwen.Margin.Six;
         }
     }
 }
