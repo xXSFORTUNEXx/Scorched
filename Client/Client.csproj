@@ -57,13 +57,14 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Client.Program</StartupObject>
+    <StartupObject>Client.Classes.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Client.cs" />
-    <Compile Include="HandleData.cs" />
+    <Compile Include="Classes\Account.cs" />
+    <Compile Include="Classes\Client.cs" />
+    <Compile Include="Classes\HandleData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserInterface.cs" />
+    <Compile Include="Classes\UserInterface.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Gwen, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">

@@ -2,7 +2,7 @@
 using static System.Console;
 using static System.Convert;
 
-namespace Client
+namespace Client.Classes
 {
     public class HandleData
     {
@@ -29,6 +29,10 @@ namespace Client
                         {
                             case (byte)Packet.Connection:
                                 WriteLine("Connected to server!");
+                                break;
+
+                            case (byte)Packet.Login:
+
                                 break;
                         }
                         break;

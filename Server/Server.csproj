@@ -43,10 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Account.cs" />
-    <Compile Include="Database.cs" />
-    <Compile Include="HandleData.cs" />
-    <Compile Include="Server.cs" />
+    <Compile Include="Classes\Account.cs" />
+    <Compile Include="Classes\HandleData.cs" />
+    <Compile Include="Classes\Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

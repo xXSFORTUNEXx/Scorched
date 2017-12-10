@@ -9,7 +9,7 @@ using Gwen.Control;
 using static System.Environment;
 using static System.Console;
 
-namespace Client
+namespace Client.Classes
 {
 #if WINDOWS || LINUX
     public static class Program
@@ -36,14 +36,15 @@ namespace Client
         private Gwen.Renderer.MonoGame.MonoGame m_Renderer;
         private Gwen.Skin.SkinBase m_Skin;
         private Gwen.Control.Canvas m_Canvas;
-
-        static int d_Tick;
+        private static int d_Tick;
 
         public Client()
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = 1360;
             graphics.PreferredBackBufferHeight = 768;
+            IsFixedTimeStep = false;
+            graphics.SynchronizeWithVerticalRetrace = true;
             Window.Position = new Point((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2) - (graphics.PreferredBackBufferWidth / 2), (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2) - (graphics.PreferredBackBufferHeight / 2));
             Content.RootDirectory = "Content";
         }
@@ -58,7 +59,6 @@ namespace Client
             g_Client = new NetClient(g_Config);
             g_Client.Start();
             g_HandleData = new HandleData();
-            g_UserInterface = new UserInterface();
             IsMouseVisible = true;
             base.Initialize();
         }
@@ -82,8 +82,9 @@ namespace Client
             m_Canvas.SetSize(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
             m_Canvas.ShouldDrawBackground = false;
             //m_Canvas.BackgroundColor = new Gwen.Color(255, 150, 170, 170);
+            g_UserInterface = new UserInterface(g_Client, m_Canvas);
+            g_UserInterface.InitMainMenu();
 
-            g_UserInterface.InitMainMenu(m_Canvas);
         }
 
         protected override void UnloadContent()
@@ -116,7 +117,6 @@ namespace Client
         {
             if (g_Client.ServerConnection == null) { CheckForConnection(g_Client); }
             g_HandleData.HandleDataMessage(g_Client);
-
             m_Input.ProcessMouseState();
             m_Input.ProcessKeyboardState();
             m_Input.ProcessTouchState();
