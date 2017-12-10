@@ -53,13 +53,18 @@ namespace Server.Classes
             string name = incMSG.ReadString();
             string password = incMSG.ReadString();
 
-            if (AccountExist(name) && CheckPassword(name, password))
+            int openPlayerSlot = OpenPlayerSlot(accounts);
+            if (openPlayerSlot < GlobalVariables.MAX_PLAYERS + 1)
             {
-                WriteLine("Valid login!");
+                if (AccountExist(name) && CheckPassword(name, password))
+                {
+                    int id = accounts[openPlayerSlot].GetIdFromDatabase(name);
+                    accounts[openPlayerSlot].LoadAccountFromDatabase(id);
+                    WriteLine("Username: " + name + " Password: " + password);
+                }
+                else { WriteLine("Invalid username or password!"); return; }
             }
-            else { WriteLine("Invalid username or password!"); }
-
-            WriteLine("Username: " + name + " Password: " + password);
+            else { WriteLine("Server is full!"); }
         }
 
         private void HandleRegistrationRequest(NetIncomingMessage incMSG, NetServer g_Server, Account[] accounts)

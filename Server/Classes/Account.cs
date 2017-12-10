@@ -53,12 +53,35 @@ namespace Server.Classes
                     {
                         while (reader.Read())
                         {
+                            Id = reader.GetInt32(0);
                             Name = reader.GetString(1);
                             Password = reader.GetString(2);
                             Last_Logged = reader.GetString(3);
                         }
                     }
                 }
+            }
+        }
+
+        public int GetIdFromDatabase(string name)
+        {
+            string connection = "Server=localhost; Database=scorched; UID=sfortune; Pwd=Fortune123*;";
+            using (MySqlConnection conn = new MySqlConnection(connection))
+            {
+                conn.Open();
+                string query = "SELECT * FROM accounts WHERE name='" + name + "';";
+                int id = 0;
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                {
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            id = reader.GetInt32(0);
+                        }
+                    }
+                }
+                return id;
             }
         }
 
