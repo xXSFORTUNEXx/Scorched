@@ -12,3 +12,6 @@ UPDATE accounts SET PASSWORD='password2' WHERE id='4';
 
 -- Account Exist/Check Password:
 SELECT * FROM accounts WHERE NAME='';
+
+-- Remove auto_increment from the id
+ALTER TABLE accounts AUTO_INCREMENT = 1

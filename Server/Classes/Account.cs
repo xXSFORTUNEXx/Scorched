@@ -16,6 +16,8 @@ namespace Server.Classes
         public string Password;
         public string Last_Logged;
 
+        public Character[] character = new Character[GlobalVariables.MAX_CHARACTER_SLOTS];
+
         public Account() { }
 
         public Account(int id, string name, string password, string last_logged)

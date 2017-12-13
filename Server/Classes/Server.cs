@@ -104,5 +104,6 @@ namespace Server.Classes
     public static class GlobalVariables
     {
         public const int MAX_PLAYERS = 10;
+        public const int MAX_CHARACTER_SLOTS = 5;
     }
 }
