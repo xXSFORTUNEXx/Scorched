@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Lidgren.Network;
 
 namespace Client.Classes
 {
@@ -12,6 +13,8 @@ namespace Client.Classes
         public string Name;
         public string Password;
         public string Last_Logged;
+        public NetConnection Server_Connection;
+        public int[] Character_Ids = new int[GlobalVariables.MAX_CHARACTER_SLOTS];
 
         public Account() { }
 
@@ -21,6 +24,11 @@ namespace Client.Classes
             Name = name;
             Password = password;
             Last_Logged = last_logged;
+
+            for (int i = 0; i < 5; i++)
+            {
+                Character_Ids[i] = -1;
+            }
         }
     }
 }

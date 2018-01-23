@@ -51,13 +51,20 @@ namespace Client.Classes
 
         protected override void Initialize()
         {
+            MainLogo();
+            Title = "Scorched Client";
+            Logging.WriteMessageLog("Loading Please Wait...");
             g_Config = new NetPeerConfiguration("scorched");
             g_Config.EnableMessageType(NetIncomingMessageType.DiscoveryResponse);
             g_Config.EnableMessageType(NetIncomingMessageType.ConnectionLatencyUpdated);
             g_Config.UseMessageRecycling = true;
+            Logging.WriteMessageLog("Setting global variables...");
             g_Config.MaximumConnections = 1;
+            g_Config.ConnectionTimeout = 5.0f;
+            Logging.WriteMessageLog("Starting client...");
             g_Client = new NetClient(g_Config);
             g_Client.Start();
+            Logging.WriteMessageLog("Client started, network configuration applied!");
             g_HandleData = new HandleData();
             IsMouseVisible = true;
             base.Initialize();
@@ -116,7 +123,7 @@ namespace Client.Classes
         protected override void Update(GameTime gameTime)
         {
             if (g_Client.ServerConnection == null) { CheckForConnection(g_Client); }
-            g_HandleData.HandleDataMessage(g_Client);
+            g_HandleData.HandleDataMessage(g_Client, g_UserInterface);
             m_Input.ProcessMouseState();
             m_Input.ProcessKeyboardState();
             m_Input.ProcessTouchState();
@@ -137,15 +144,31 @@ namespace Client.Classes
         {
             if (TickCount - d_Tick >= 6500)
             {
-                WriteLine("Connecting to server...");
+                Logging.WriteMessageLog("Connecting to server...");
                 g_Client.DiscoverLocalPeers(14242);
                 d_Tick = TickCount;
             }
+        }
+
+        static void MainLogo()
+        {
+            Logging.WriteLoglessMessage(@" (                                         ", false);
+            Logging.WriteLoglessMessage(@" )\ )                       )        (     ", false);
+            Logging.WriteLoglessMessage(@"(()/(          (         ( /(    (   )\ )  ", false);
+            Logging.WriteLoglessMessage(@" /(_)) (   (   )(    (   )\())  ))\ (()/(  ", false);
+            Logging.WriteLoglessMessage(@"(_))   )\  )\ (()\   )\ ((_)\  /((_) ((_)) ", false);
+            Logging.WriteLoglessMessage(@"/ __| ((_)((_) ((_) ((_)| |(_)(_))   _| |  ", false);
+            Logging.WriteLoglessMessage(@"\__ \/ _|/ _ \| '_|/ _| | ' \ / -_)/ _` |  ", false);
+            Logging.WriteLoglessMessage(@"|___/\__|\___/|_|  \__| |_||_|\___|\__,_|  ", false);
+            Logging.WriteLoglessMessage("             Created by: Steven M. Fortune  ", false);
         }
     }
 
     public static class GlobalVariables
     {
+        public const byte NO = 0;
+        public const byte YES = 1;
         public const int MAX_PLAYERS = 10;
+        public const int MAX_CHARACTER_SLOTS = 5;
     }
 }

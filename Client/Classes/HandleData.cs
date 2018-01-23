@@ -10,10 +10,10 @@ namespace Client.Classes
         public int port;
         public int myIndex;
 
-        public void HandleDataMessage(NetClient g_Client)
+        public void HandleDataMessage(NetClient g_Client, UserInterface g_UserInterface)
         {
             NetIncomingMessage incMSG;
-            ipAddress = "10.16.1.174";
+            ipAddress = "10.16.0.2";
             port = 14242;
 
             if ((incMSG = g_Client.ReadMessage()) != null)
@@ -24,15 +24,19 @@ namespace Client.Classes
                         HandleDiscoveryResponse(incMSG, g_Client);
                         break;
 
+                    case NetIncomingMessageType.StatusChanged:
+                        HandleStatusChange(incMSG, g_Client);
+                        break;
+
                     case NetIncomingMessageType.Data:
                         switch (incMSG.ReadByte())
                         {
                             case (byte)Packet.Connection:
-                                WriteLine("Connected to server!");
+                                Logging.WriteMessageLog("Connected to server!");
                                 break;
 
                             case (byte)Packet.Login:
-
+                                HandleLoginResponse(incMSG, g_Client, g_UserInterface);
                                 break;
                         }
                         break;
@@ -40,13 +44,25 @@ namespace Client.Classes
             }
         }
 
+        private void HandleLoginResponse(NetIncomingMessage incMSG, NetClient g_Client, UserInterface g_UserInterface)
+        {
+            byte Response = incMSG.ReadByte();
+            Logging.WriteMessageLog("Successful login! Response:" + Response, true, g_Client.ServerConnection.ToString());
+            g_UserInterface.CharactersMenu();
+        }
+
         private void HandleDiscoveryResponse(NetIncomingMessage incMSG, NetClient g_Client)
         {
-            WriteLine("Found Server: " + incMSG.ReadString() + " @ " + incMSG.SenderEndPoint);
+            Logging.WriteMessageLog("Found Server: " + incMSG.ReadString() + " @ " + incMSG.SenderEndPoint);
             NetOutgoingMessage outMSG = g_Client.CreateMessage();
             outMSG.Write((byte)Packet.Connection);
             outMSG.Write("scorched");
             g_Client.Connect(ipAddress, ToInt32(port), outMSG);
+        }
+
+        private void HandleStatusChange(NetIncomingMessage incMSG, NetClient g_Client)
+        {
+            Logging.WriteMessageLog(incMSG.SenderConnection.ToString() + " status changed. " + incMSG.SenderConnection.Status);
         }
     }
 

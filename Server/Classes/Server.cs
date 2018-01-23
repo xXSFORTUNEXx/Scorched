@@ -14,26 +14,41 @@ namespace Server.Classes
 
         static void Main(string[] args)
         {
-            Title = "Scorched Server";
-            WriteLine("Loading Please Wait...");
-            WriteLine("Enabling message types...");
+            Title = "Scorched Server - Loading Please Wait";
+            MainLogo();
+            Logging.WriteMessageLog("Loading Please Wait...");
+            Logging.WriteMessageLog("Enabling message types...");
             g_Config = new NetPeerConfiguration("scorched") { Port = 14242 };
             g_Config.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
             g_Config.EnableMessageType(NetIncomingMessageType.ConnectionLatencyUpdated);
             g_Config.EnableMessageType(NetIncomingMessageType.DiscoveryRequest);
             g_Config.UseMessageRecycling = true;
-            WriteLine("Setting global variables...");
+            Logging.WriteMessageLog("Setting global variables...");
             g_Config.MaximumConnections = GlobalVariables.MAX_PLAYERS;
             g_Config.EnableUPnP = false;
-            g_Config.ConnectionTimeout = 25.0f;
-            WriteLine("MySQL database connected: " + DatabaseConnection());
-            WriteLine("Starting server...");
+            g_Config.ConnectionTimeout = 5.0f;
+            Logging.WriteMessageLog("MySQL Connection: " + DatabaseConnection());
+            SQLDatabase.DatabaseExists();
+            Logging.WriteMessageLog("Starting server...");
             g_Server = new NetServer(g_Config);
             g_Server.Start();
-            WriteLine("Server started!");
-            WriteLine("Starting server loop...");
+            Logging.WriteMessageLog("Server started!");
+            Logging.WriteMessageLog("Starting server loop...");
             Server s_Server = new Server();
             s_Server.Loop(g_Server);
+        }
+
+        static void MainLogo()
+        {
+            Logging.WriteLoglessMessage(@" (                                         ", false);
+            Logging.WriteLoglessMessage(@" )\ )                       )        (     ", false);
+            Logging.WriteLoglessMessage(@"(()/(          (         ( /(    (   )\ )  ", false);
+            Logging.WriteLoglessMessage(@" /(_)) (   (   )(    (   )\())  ))\ (()/(  ", false);
+            Logging.WriteLoglessMessage(@"(_))   )\  )\ (()\   )\ ((_)\  /((_) ((_)) ", false);
+            Logging.WriteLoglessMessage(@"/ __| ((_)((_) ((_) ((_)| |(_)(_))   _| |  ", false);
+            Logging.WriteLoglessMessage(@"\__ \/ _|/ _ \| '_|/ _| | ' \ / -_)/ _` |  ", false);
+            Logging.WriteLoglessMessage(@"|___/\__|\___/|_|  \__| |_||_|\___|\__,_|  ", false);
+            Logging.WriteLoglessMessage("             Created by: Steven M. Fortune  ", false);
         }
 
         static bool DatabaseConnection()
@@ -71,10 +86,10 @@ namespace Server.Classes
         {
             g_HandleData = new HandleData();
             InitArrays();
-            WriteLine("Listening for connections...");
+            Logging.WriteMessageLog("Listening for connections...");
             while (true)
             {
-                Title = "Scorched - CPS: " + CalculateCyclesPerSecond();
+                Title = "Scorched Server - CPS: " + CalculateCyclesPerSecond();
                 g_HandleData.HandleDataMessage(g_Server, accounts);
                 Sleep(10);
             }
@@ -103,6 +118,8 @@ namespace Server.Classes
 
     public static class GlobalVariables
     {
+        public const byte NO = 0;
+        public const byte YES = 1;
         public const int MAX_PLAYERS = 10;
         public const int MAX_CHARACTER_SLOTS = 5;
     }

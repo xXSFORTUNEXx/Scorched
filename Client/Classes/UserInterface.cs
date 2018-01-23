@@ -31,6 +31,12 @@ namespace Client.Classes
         private Button g_RegisterButton;
         private Button g_BackRegisterButton;
 
+        private Window g_CharacterWindow;
+        private Label g_CharLabel;
+        private ListBox g_Characters;
+        private Button g_EnterWorld;
+        private Button g_LogOut;
+
         private NetClient g_Client;
         private Canvas m_Canvas;
 
@@ -38,6 +44,22 @@ namespace Client.Classes
         {
             g_Client = client;
             m_Canvas = canvas;
+        }
+
+        public void CharactersMenu()
+        {
+            g_CharacterWindow = new Window(m_Canvas)
+            {
+                Title = "Character Selection",
+                Size = new Gwen.Size(200, 375),
+                StartPosition = StartPosition.CenterCanvas
+            };
+
+            VerticalLayout layout = new VerticalLayout(g_CharacterWindow)
+            {
+                HorizontalAlignment = Gwen.HorizontalAlignment.Center,
+                Padding = Gwen.Padding.Five
+            };
         }
 
         public void InitMainMenu()
@@ -232,6 +254,7 @@ namespace Client.Classes
                     }
                 }
             }
+            Logging.WriteMessageLog("Sending registration request...");
         }
 
         private void SendLoginRequest()
@@ -251,6 +274,7 @@ namespace Client.Classes
                 outMSG.Encrypt(encryptionKey);
                 g_Client.SendMessage(outMSG, g_Client.ServerConnection, NetDeliveryMethod.ReliableOrdered);
             }
+            Logging.WriteMessageLog("Sending login request...");
         }
     }
 }

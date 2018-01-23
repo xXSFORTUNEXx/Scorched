@@ -46,8 +46,10 @@
     <Compile Include="Classes\Account.cs" />
     <Compile Include="Classes\Character.cs" />
     <Compile Include="Classes\HandleData.cs" />
+    <Compile Include="Classes\Logging.cs" />
     <Compile Include="Classes\Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Classes\SQLDatabase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

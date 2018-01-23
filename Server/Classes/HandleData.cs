@@ -59,12 +59,18 @@ namespace Server.Classes
                 if (AccountExist(name) && CheckPassword(name, password))
                 {
                     int id = accounts[openPlayerSlot].GetIdFromDatabase(name);
+                    accounts[openPlayerSlot] = new Account(id, name, incMSG.SenderConnection);
                     accounts[openPlayerSlot].LoadAccountFromDatabase(id);
-                    WriteLine("Username: " + name + " Password: " + password);
+                    Logging.WriteMessageLog("Id: " + id + " Username: " + name + " Password: " + password, true, incMSG.SenderConnection.ToString());
+
+                    NetOutgoingMessage outMSG = g_Server.CreateMessage();
+                    outMSG.Write((byte)Packet.Login);
+                    outMSG.Write(GlobalVariables.YES);
+                    g_Server.SendMessage(outMSG, accounts[openPlayerSlot].Server_Address, NetDeliveryMethod.ReliableOrdered);
                 }
-                else { WriteLine("Invalid username or password!"); return; }
+                else { Logging.WriteMessageLog("Invalid username or password!"); return; }
             }
-            else { WriteLine("Server is full!"); }
+            else { Logging.WriteMessageLog("Server is full!"); }
         }
 
         private void HandleRegistrationRequest(NetIncomingMessage incMSG, NetServer g_Server, Account[] accounts)
@@ -81,16 +87,16 @@ namespace Server.Classes
                     accounts[openPlayerslot].Password = password;
                     accounts[openPlayerslot].Last_Logged = DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString();
                     accounts[openPlayerslot].CreateAccountInDatabase();
-                    WriteLine("Username: " + name + " Password: " + password);
+                    Logging.WriteMessageLog("Username: " + name + " Password: " + password);
                 }
-                else { WriteLine("Server is full!"); return; }
+                else { Logging.WriteMessageLog("Server is full!"); return; }
             }
-            else { WriteLine("Account already exists!"); }
+            else { Logging.WriteMessageLog("Account already exists!"); }
         }
 
         private void HandleDiscoveryRequest(NetIncomingMessage incMSG, NetServer g_Server)
         {
-            WriteLine("Client Discovered @ " + incMSG.SenderEndPoint.ToString());
+            Logging.WriteMessageLog("Client Discovered @ " + incMSG.SenderEndPoint.ToString());
             NetOutgoingMessage outMSG = g_Server.CreateMessage();
             outMSG.Write("Scorched Server");
             g_Server.SendDiscoveryResponse(outMSG, incMSG.SenderEndPoint);
@@ -115,12 +121,12 @@ namespace Server.Classes
 
         private void HandleStatusChange(NetIncomingMessage incMSG, NetServer g_Server)
         {
-            WriteLine(incMSG.SenderConnection.ToString() + " status changed. " + incMSG.SenderConnection.Status);
+            Logging.WriteMessageLog(incMSG.SenderConnection.ToString() + " status changed. " + incMSG.SenderConnection.Status);
             if (incMSG.SenderConnection.Status == NetConnectionStatus.Disconnected || incMSG.SenderConnection.Status == NetConnectionStatus.Disconnecting)
             {
-                WriteLine("Disconnected, clearing data...");
+                Logging.WriteMessageLog("Disconnected, clearing data...");
                 //Clear data
-                WriteLine("Data cleared, connection now open.");
+                Logging.WriteMessageLog("Data cleared, connection now open.");
             }
         }
 
@@ -131,6 +137,7 @@ namespace Server.Classes
             {
                 conn.Open();
                 string query = "SELECT * FROM accounts WHERE name='" + name + "'";
+                Logging.WriteMessageLog("[DB Query] : " + query);
                 using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
                     using (MySqlDataReader reader = cmd.ExecuteReader())
@@ -156,6 +163,7 @@ namespace Server.Classes
             {
                 conn.Open();
                 string query = "SELECT * FROM accounts WHERE name='" + name + "'";
+                Logging.WriteMessageLog("[DB Query] : " + query);
                 using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
                     using (MySqlDataReader reader = cmd.ExecuteReader())

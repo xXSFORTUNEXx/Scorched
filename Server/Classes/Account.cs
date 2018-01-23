@@ -15,18 +15,46 @@ namespace Server.Classes
         public string Name;
         public string Password;
         public string Last_Logged;
+        public NetConnection Server_Address;
         public int[] Character_Ids = new int[GlobalVariables.MAX_CHARACTER_SLOTS];
 
         public Character[] character = new Character[GlobalVariables.MAX_CHARACTER_SLOTS];
 
         public Account() { }
 
-        public Account(int id, string name, string password, string last_logged)
+        public Account(int id, string name, NetConnection server)
+        {
+            Id = id;
+            Name = name;
+            Server_Address = server;
+
+            for (int i = 0; i < 5; i++)
+            {
+                Character_Ids[i] = -1;
+            }
+        }
+
+        public Account(int id, string name, string password, NetConnection server)
+        {
+            Id = id;
+            Name = name;
+            Password = password;
+            Server_Address = server;
+
+            for (int i = 0; i < 5; i++)
+            {
+                Character_Ids[i] = -1;
+            }
+        }
+
+        public Account(int id, string name, string password, string last_logged, NetConnection server)
         {
             id = Id;
             Name = name;
             Password = password;
             Last_Logged = last_logged;
+            Server_Address = server;
+
             for (int i = 0; i < 5; i++)
             {
                 Character_Ids[i] = -1;
@@ -44,6 +72,7 @@ namespace Server.Classes
                 {
                     cmd.ExecuteNonQuery();
                 }
+                Logging.WriteMessageLog("[DB Query] : " + query);
             }
         }
 
@@ -54,6 +83,7 @@ namespace Server.Classes
             {
                 conn.Open();
                 string query = "SELECT * FROM accounts WHERE id='" + id + "';";
+                Logging.WriteMessageLog("[DB Query] : " + query);
                 using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
                     using (MySqlDataReader reader = cmd.ExecuteReader())
@@ -89,6 +119,7 @@ namespace Server.Classes
                 {
                     cmd.ExecuteNonQuery();
                 }
+                Logging.WriteMessageLog("[DB Query] : " + query);
             }
         }
 
@@ -103,6 +134,7 @@ namespace Server.Classes
                 {
                     cmd.ExecuteNonQuery();
                 }
+                Logging.WriteMessageLog("[DB Query] : " + query);
             }
         }
 
@@ -117,6 +149,7 @@ namespace Server.Classes
                 {
                     cmd.ExecuteNonQuery();
                 }
+                Logging.WriteMessageLog("[DB Query] : " + query);
             }
         }
 
@@ -127,6 +160,7 @@ namespace Server.Classes
             {
                 conn.Open();
                 string query = "SELECT * FROM accounts WHERE name='" + name + "';";
+                Logging.WriteMessageLog("[DB Query] : " + query);
                 int id = 0;
                 using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
