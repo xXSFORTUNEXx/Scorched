@@ -72,7 +72,7 @@ namespace Server.Classes
                 {
                     cmd.ExecuteNonQuery();
                 }
-                Logging.WriteMessageLog("[DB Query] : " + query);
+                Logging.WriteMessageLog("[DB Insert] : " + query);
             }
         }
 
@@ -119,7 +119,7 @@ namespace Server.Classes
                 {
                     cmd.ExecuteNonQuery();
                 }
-                Logging.WriteMessageLog("[DB Query] : " + query);
+                Logging.WriteMessageLog("[DB Update] : " + query);
             }
         }
 

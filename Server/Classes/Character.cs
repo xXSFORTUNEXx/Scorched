@@ -77,7 +77,7 @@ namespace Server.Classes
             {
                 conn.Open();
                 string query = "UPDATE characters";
-                query += "SET NAME='" + Name + "',X='" + X + "',Y='" + Y + "',z='" + Z + "',direction='" + Direction + "',step='" + Sprite + "',aim_direction='" + Aim_Direction + "',sprite='" + Sprite + "'";
+                query += "SET NAME='" + Name + "',X='" + X + "',Y='" + Y + "',z='" + Z + "',direction='" + Direction + "',step='" + Step + "',aim_direction='" + Aim_Direction + "',sprite='" + Sprite + "'";
                 query += "WHERE id='" + id + "';";
                 using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {

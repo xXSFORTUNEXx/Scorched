@@ -73,6 +73,19 @@ namespace Server.Classes
             else { Logging.WriteMessageLog("Server is full!"); }
         }
 
+        void SendCharacterData(NetIncomingMessage incMSG, NetServer g_Server, Account[] accounts, int id)
+        {
+            for (int i = 0; i < GlobalVariables.MAX_CHARACTER_SLOTS; i++)
+            {
+                NetOutgoingMessage outMSG = g_Server.CreateMessage();
+                outMSG.Write((byte)Packet.CharacterData);
+                outMSG.WriteVariableInt32(accounts[id].Character_Ids[i]);
+                outMSG.WriteVariableInt32(accounts[id].character[i].id);
+                outMSG.Write(accounts[id].character[i].Name);
+                outMSG.WriteVariableInt32(accounts[id].character[i].Sprite);
+            }
+        }
+
         private void HandleRegistrationRequest(NetIncomingMessage incMSG, NetServer g_Server, Account[] accounts)
         {
             string name = incMSG.ReadString();
@@ -128,11 +141,6 @@ namespace Server.Classes
                 //Clear data
                 Logging.WriteMessageLog("Data cleared, connection now open.");
             }
-        }
-
-        void SendCharacterScreenData(NetIncomingMessage incMSG, NetServer g_Server, Account[] accounts, int id)
-        {
-
         }
 
         private static bool AccountExist(string name)
@@ -206,6 +214,7 @@ namespace Server.Classes
         Register,
         Login,
         Error,
-        Notification
+        Notification,
+        CharacterData
     }
 }
