@@ -130,6 +130,11 @@ namespace Server.Classes
             }
         }
 
+        void SendCharacterScreenData(NetIncomingMessage incMSG, NetServer g_Server, Account[] accounts, int id)
+        {
+
+        }
+
         private static bool AccountExist(string name)
         {
             string connection = "Server=localhost; Database=scorched; UID=sfortune; Pwd=Fortune123*;";
