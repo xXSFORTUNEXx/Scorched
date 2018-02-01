@@ -51,15 +51,57 @@ namespace Client.Classes
             g_CharacterWindow = new Window(m_Canvas)
             {
                 Title = "Character Selection",
-                Size = new Gwen.Size(200, 375),
-                StartPosition = StartPosition.CenterCanvas
+                Size = new Gwen.Size(200, 395),
+                StartPosition = StartPosition.CenterCanvas,
+                IsClosable = false
             };
 
             VerticalLayout layout = new VerticalLayout(g_CharacterWindow)
             {
                 HorizontalAlignment = Gwen.HorizontalAlignment.Center,
-                Padding = Gwen.Padding.Five
+                VerticalAlignment = Gwen.VerticalAlignment.Center,
+                Padding = Gwen.Padding.One
             };
+
+            g_CharLabel = new Label(layout)
+            {
+                Margin = Gwen.Margin.Three,
+                Size = new Gwen.Size(125, 25),
+                Text = "- Select a character -",
+                Alignment = Gwen.Alignment.Center
+            };
+
+            g_Characters = new ListBox(layout);
+            g_Characters.Size = new Gwen.Size(175, 250);
+            g_Characters.VerticalAlignment = Gwen.VerticalAlignment.Center;
+            g_Characters.HorizontalAlignment = Gwen.HorizontalAlignment.Center;
+            g_Characters.Margin = Gwen.Margin.Three;
+            g_Characters.ColumnCount = 3;
+
+            g_EnterWorld = new Button(layout)
+            {
+                Margin = Gwen.Margin.Three,
+                Size = new Gwen.Size(160, 25),
+                Text = "Enter World",
+                VerticalAlignment = Gwen.VerticalAlignment.Center,
+                HorizontalAlignment = Gwen.HorizontalAlignment.Center
+            };
+
+            g_LogOut = new Button(layout)
+            {
+                Margin = Gwen.Margin.Three,
+                Size = new Gwen.Size(125, 25),
+                Text = "Back to Main Menu",
+                VerticalAlignment = Gwen.VerticalAlignment.Center,
+                HorizontalAlignment = Gwen.HorizontalAlignment.Center
+            };
+        }
+
+        public void AddCharacterToList(string name, int x, int y)
+        {
+            TableRow row = g_Characters.AddRow(name);
+            row.SetCellText(1, "X: " + x);
+            row.SetCellText(2, "Y: " + y);
         }
 
         public void InitMainMenu()
@@ -68,6 +110,7 @@ namespace Client.Classes
             g_MainMenu.Title = "Main Menu";
             g_MainMenu.Size = new Gwen.Size(150, 150);
             g_MainMenu.StartPosition = StartPosition.CenterCanvas;
+            g_MainMenu.IsClosable = false;
 
             VerticalLayout layout = new VerticalLayout(g_MainMenu);
             layout.HorizontalAlignment = Gwen.HorizontalAlignment.Center;
@@ -88,6 +131,7 @@ namespace Client.Classes
 
         private void G_Register_Clicked(ControlBase sender, ClickedEventArgs arguments)
         {
+            if (g_Client.ServerConnection == null) { return; }
             g_MainMenu.Close();
             RegisterMenu(sender);
             g_RegisterMenu.MakeModal();
@@ -95,6 +139,7 @@ namespace Client.Classes
 
         private void G_Login_Clicked(ControlBase sender, ClickedEventArgs arguments)
         {
+            if (g_Client.ServerConnection == null) { return; }
             g_MainMenu.Close();
             LoginMenu(sender);
             g_LoginMenu.MakeModal();
@@ -106,6 +151,7 @@ namespace Client.Classes
             g_LoginMenu.Title = "Login";
             g_LoginMenu.Size = new Gwen.Size(200, 275);
             g_LoginMenu.StartPosition = StartPosition.CenterCanvas;
+            g_LoginMenu.IsClosable = false;
 
             VerticalLayout layout = new VerticalLayout(g_LoginMenu);
             layout.HorizontalAlignment = Gwen.HorizontalAlignment.Center;
@@ -169,6 +215,7 @@ namespace Client.Classes
             g_RegisterMenu.Title = "Register";
             g_RegisterMenu.Size = new Gwen.Size(200, 300);
             g_RegisterMenu.StartPosition = StartPosition.CenterCanvas;
+            g_RegisterMenu.IsClosable = false;
 
             VerticalLayout layout = new VerticalLayout(g_RegisterMenu);
             layout.HorizontalAlignment = Gwen.HorizontalAlignment.Center;

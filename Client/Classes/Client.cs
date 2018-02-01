@@ -31,6 +31,7 @@ namespace Client.Classes
         SpriteBatch spriteBatch;
         HandleData g_HandleData;
         UserInterface g_UserInterface;
+        Account[] accounts = new Account[GlobalVariables.MAX_PLAYERS];
 
         private Gwen.Renderer.MonoGame.Input.MonoGame m_Input;
         private Gwen.Renderer.MonoGame.MonoGame m_Renderer;
@@ -67,6 +68,7 @@ namespace Client.Classes
             Logging.WriteMessageLog("Client started, network configuration applied!");
             g_HandleData = new HandleData();
             IsMouseVisible = true;
+            InitArrays();
             base.Initialize();
         }
 
@@ -123,7 +125,7 @@ namespace Client.Classes
         protected override void Update(GameTime gameTime)
         {
             if (g_Client.ServerConnection == null) { CheckForConnection(g_Client); }
-            g_HandleData.HandleDataMessage(g_Client, g_UserInterface);
+            g_HandleData.HandleDataMessage(g_Client, g_UserInterface, accounts);
             m_Input.ProcessMouseState();
             m_Input.ProcessKeyboardState();
             m_Input.ProcessTouchState();
@@ -147,6 +149,14 @@ namespace Client.Classes
                 Logging.WriteMessageLog("Connecting to server...");
                 g_Client.DiscoverLocalPeers(14242);
                 d_Tick = TickCount;
+            }
+        }
+
+        private void InitArrays()
+        {
+            for (int i = 0; i < GlobalVariables.MAX_PLAYERS; i++)
+            {
+                accounts[i] = new Account();
             }
         }
 

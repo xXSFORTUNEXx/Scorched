@@ -16,11 +16,18 @@ namespace Server.Classes
         public string Password;
         public string Last_Logged;
         public NetConnection Server_Address;
-        public int[] Character_Ids = new int[GlobalVariables.MAX_CHARACTER_SLOTS];
+        public int[] Character_Id = new int[GlobalVariables.MAX_CHARACTER_SLOTS];
 
         public Character[] character = new Character[GlobalVariables.MAX_CHARACTER_SLOTS];
 
-        public Account() { }
+        public Account()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                Character_Id[i] = -1;
+                character[i] = new Character(-1, "None", 0);
+            }
+        }
 
         public Account(int id, string name, NetConnection server)
         {
@@ -30,7 +37,8 @@ namespace Server.Classes
 
             for (int i = 0; i < 5; i++)
             {
-                Character_Ids[i] = -1;
+                Character_Id[i] = -1;
+                character[i] = new Character(-1, "None", 0);
             }
         }
 
@@ -43,7 +51,7 @@ namespace Server.Classes
 
             for (int i = 0; i < 5; i++)
             {
-                Character_Ids[i] = -1;
+                Character_Id[i] = -1;
             }
         }
 
@@ -57,7 +65,7 @@ namespace Server.Classes
 
             for (int i = 0; i < 5; i++)
             {
-                Character_Ids[i] = -1;
+                Character_Id[i] = -1;
             }
         }
 
@@ -97,7 +105,7 @@ namespace Server.Classes
                             int n = 4;
                             for (int i = 0; i < 5; i++)
                             {
-                                Character_Ids[i] = reader.GetInt32(n);
+                                Character_Id[i] = reader.GetInt32(n);
                                 n += 1;
                             }
                         }
@@ -113,7 +121,7 @@ namespace Server.Classes
             {
                 conn.Open();
                 string query = "UPDATE accounts";
-                query += "SET characterid_1 = '" + Character_Ids[0] + "', characterid_2 = '" + Character_Ids[1] + "', characterid_3 = '" + Character_Ids[2] + "', characterid_4 = '" + Character_Ids[3] + "', characterid_5 = '" + Character_Ids[4] + "'";
+                query += "SET characterid_1 = '" + Character_Id[0] + "', characterid_2 = '" + Character_Id[1] + "', characterid_3 = '" + Character_Id[2] + "', characterid_4 = '" + Character_Id[3] + "', characterid_5 = '" + Character_Id[4] + "'";
                 query += "WHERE id = '" + Id + "';";
                 using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {

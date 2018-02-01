@@ -14,9 +14,18 @@ namespace Client.Classes
         public string Password;
         public string Last_Logged;
         public NetConnection Server_Connection;
-        public int[] Character_Ids = new int[GlobalVariables.MAX_CHARACTER_SLOTS];
+        public int[] Character_Id = new int[GlobalVariables.MAX_CHARACTER_SLOTS];
 
-        public Account() { }
+        public Character[] character = new Character[GlobalVariables.MAX_CHARACTER_SLOTS];
+
+        public Account()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                Character_Id[i] = -1;
+                character[i] = new Character(-1, "None", 0);
+            }
+        }
 
         public Account(int id, string name, string password, string last_logged)
         {
@@ -27,7 +36,8 @@ namespace Client.Classes
 
             for (int i = 0; i < 5; i++)
             {
-                Character_Ids[i] = -1;
+                Character_Id[i] = -1;
+                character[i] = new Character(-1, "None", 0);
             }
         }
     }

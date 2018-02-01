@@ -67,23 +67,37 @@ namespace Server.Classes
                     outMSG.Write((byte)Packet.Login);
                     outMSG.Write(GlobalVariables.YES);
                     g_Server.SendMessage(outMSG, accounts[openPlayerSlot].Server_Address, NetDeliveryMethod.ReliableOrdered);
+                    SendCharacterData(g_Server, accounts, openPlayerSlot);
                 }
                 else { Logging.WriteMessageLog("Invalid username or password!"); return; }
             }
             else { Logging.WriteMessageLog("Server is full!"); }
         }
 
-        void SendCharacterData(NetIncomingMessage incMSG, NetServer g_Server, Account[] accounts, int id)
+        void SendCharacterData(NetServer g_Server, Account[] accounts, int playerSlot)
         {
+            NetOutgoingMessage outMSG = g_Server.CreateMessage();
+            outMSG.Write((byte)Packet.CharacterData);
+            outMSG.WriteVariableInt32(playerSlot);
             for (int i = 0; i < GlobalVariables.MAX_CHARACTER_SLOTS; i++)
             {
-                NetOutgoingMessage outMSG = g_Server.CreateMessage();
-                outMSG.Write((byte)Packet.CharacterData);
-                outMSG.WriteVariableInt32(accounts[id].Character_Ids[i]);
-                outMSG.WriteVariableInt32(accounts[id].character[i].id);
-                outMSG.Write(accounts[id].character[i].Name);
-                outMSG.WriteVariableInt32(accounts[id].character[i].Sprite);
+                int characterid = accounts[playerSlot].Character_Id[i];
+                if (characterid > 0)
+                {
+                    accounts[playerSlot].character[i].LoadCharacterFromDatabase(characterid);
+                }
+                outMSG.WriteVariableInt32(accounts[playerSlot].Character_Id[i]);
+                outMSG.Write(accounts[playerSlot].character[i].Name);
+                outMSG.WriteVariableInt32(accounts[playerSlot].character[i].X);
+                outMSG.WriteVariableInt32(accounts[playerSlot].character[i].Y);
+                outMSG.WriteVariableInt32(accounts[playerSlot].character[i].Z);
+                outMSG.WriteVariableInt32(accounts[playerSlot].character[i].Direction);
+                outMSG.WriteVariableInt32(accounts[playerSlot].character[i].Step);
+                outMSG.WriteVariableInt32(accounts[playerSlot].character[i].Aim_Direction);
+                outMSG.WriteVariableInt32(accounts[playerSlot].character[i].Sprite);
             }
+            g_Server.SendMessage(outMSG, accounts[playerSlot].Server_Address, NetDeliveryMethod.ReliableOrdered);
+            Logging.WriteMessageLog("Character data sent!", true, accounts[playerSlot].Server_Address.ToString());
         }
 
         private void HandleRegistrationRequest(NetIncomingMessage incMSG, NetServer g_Server, Account[] accounts)

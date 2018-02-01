@@ -10,7 +10,7 @@ namespace Client.Classes
         public int port;
         public int myIndex;
 
-        public void HandleDataMessage(NetClient g_Client, UserInterface g_UserInterface)
+        public void HandleDataMessage(NetClient g_Client, UserInterface g_UserInterface, Account[] accounts)
         {
             NetIncomingMessage incMSG;
             ipAddress = "10.16.0.2";
@@ -38,10 +38,46 @@ namespace Client.Classes
                             case (byte)Packet.Login:
                                 HandleLoginResponse(incMSG, g_Client, g_UserInterface);
                                 break;
+
+                            case (byte)Packet.CharacterData:
+                                HandleCharacterData(incMSG, g_Client, g_UserInterface, accounts);
+                                break;
                         }
                         break;
                 }
             }
+        }
+        
+        private void HandleCharacterData(NetIncomingMessage incMSG, NetClient g_Client, UserInterface g_Userinterface, Account[] accounts)
+        {
+            string name;
+            int x;
+            int y;
+            int id = incMSG.ReadVariableInt32();
+
+            for (int i = 0; i < GlobalVariables.MAX_CHARACTER_SLOTS; i++)
+            {
+                accounts[id].Character_Id[i] = incMSG.ReadVariableInt32();
+                name = incMSG.ReadString();
+                x = incMSG.ReadVariableInt32();
+                y = incMSG.ReadVariableInt32();
+                accounts[id].character[i].Z = incMSG.ReadVariableInt32();
+                accounts[id].character[i].Direction = incMSG.ReadVariableInt32();
+                accounts[id].character[i].Step = incMSG.ReadVariableInt32();
+                accounts[id].character[i].Aim_Direction = incMSG.ReadVariableInt32();
+                accounts[id].character[i].Sprite = incMSG.ReadVariableInt32();
+                accounts[id].character[i].Id = accounts[id].Character_Id[i];
+                accounts[id].character[i].Name = name;
+                accounts[id].character[i].X = x;
+                accounts[id].character[i].Y = y;
+
+                if (accounts[id].character[i].Id > 0)
+                {
+                    g_Userinterface.AddCharacterToList(name, x, y);
+                }
+            }
+
+            Logging.WriteMessageLog("Character data received!", true, g_Client.ServerConnection.ToString());
         }
 
         private void HandleLoginResponse(NetIncomingMessage incMSG, NetClient g_Client, UserInterface g_UserInterface)
@@ -72,6 +108,7 @@ namespace Client.Classes
         Register,
         Login,
         Error,
-        Notification
+        Notification,
+        CharacterData
     }
 }

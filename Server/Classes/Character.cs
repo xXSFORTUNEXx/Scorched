@@ -12,7 +12,7 @@ namespace Server.Classes
 {
     public class Character
     {
-        public int id;
+        public int Id;
         public string Name;
         public int X;
         public int Y;
@@ -23,6 +23,13 @@ namespace Server.Classes
         public int Sprite;
 
         public Character() { }
+
+        public Character(int id, string name, int sprite)
+        {
+            Id = id;
+            Name = name;
+            Sprite = sprite;
+        }
 
         public void CreateCharacterInDatabase(int userId)
         {

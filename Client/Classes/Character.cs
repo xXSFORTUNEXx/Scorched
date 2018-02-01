@@ -8,7 +8,7 @@ namespace Client.Classes
 {
     public class Character
     {
-        public int id;
+        public int Id;
         public string Name;
         public int X;
         public int Y;
@@ -17,6 +17,15 @@ namespace Client.Classes
         public int Step;
         public int Aim_Direction;
         public int Sprite;
+
+        public Character() { }
+
+        public Character(int id, string name, int sprite)
+        {
+            Id = id;
+            Name = name;
+            Sprite = sprite;
+        }
     }
 
     public enum Directions : byte
