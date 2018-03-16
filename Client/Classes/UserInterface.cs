@@ -91,10 +91,17 @@ namespace Client.Classes
             {
                 Margin = Gwen.Margin.Three,
                 Size = new Gwen.Size(125, 25),
-                Text = "Back to Main Menu",
+                Text = "Logout to Main Menu",
                 VerticalAlignment = Gwen.VerticalAlignment.Center,
-                HorizontalAlignment = Gwen.HorizontalAlignment.Center
+                HorizontalAlignment = Gwen.HorizontalAlignment.Center,
+                
             };
+            g_LogOut.Clicked += G_LogOut_Clicked;
+        }
+
+        private void G_LogOut_Clicked(ControlBase sender, ClickedEventArgs arguments)
+        {
+
         }
 
         public void AddCharacterToList(string name, int x, int y)
