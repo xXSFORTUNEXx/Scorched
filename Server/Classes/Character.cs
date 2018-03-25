@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MySql.Data.MySqlClient;
-using MySql.Data;
 using Lidgren.Network;
-
+using System.Data.SqlClient;
 
 namespace Server.Classes
 {
@@ -33,15 +31,15 @@ namespace Server.Classes
 
         public void CreateCharacterInDatabase(int userId)
         {
-            string connection = "Server=localhost; Database=scorched; UID=sfortune; Pwd=Fortune123*;";
-            using (MySqlConnection conn = new MySqlConnection(connection))
+            string connection = @"Data Source=FDESKTOP-01\SFORTUNESQL;Initial Catalog=Scorched;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connection))
             {
                 conn.Open();
                 string query = "INSERT INTO characters";
                 query += "(NAME,X,Y,z,direction,step,aim_direction,sprite)";
                 query += "VALUES";
                 query += "('" + Name + "','" + X + "','" + Y + "','" + Z + "','" + Direction + "','" + Step + "','" + Aim_Direction + "','" + Sprite + "');";
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.ExecuteNonQuery();
                 }
@@ -51,14 +49,14 @@ namespace Server.Classes
 
         public void LoadCharacterFromDatabase(int id)
         {
-            string connection = "Server=localhost; Database=scorched; UID=sfortune; Pwd=Fortune123*;";
-            using (MySqlConnection conn = new MySqlConnection(connection))
+            string connection = @"Data Source=FDESKTOP-01\SFORTUNESQL;Initial Catalog=Scorched;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connection))
             {
                 conn.Open();
                 string query = "SELECT * FROM characters WHERE id='" + id + "';";
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
@@ -79,14 +77,14 @@ namespace Server.Classes
 
         public void UpdateCharacterInDatabase(int id)
         {
-            string connection = "Server=localhost; Database=scorched; UID=sfortune; Pwd=Fortune123*;";
-            using (MySqlConnection conn = new MySqlConnection(connection))
+            string connection = @"Data Source=FDESKTOP-01\SFORTUNESQL;Initial Catalog=Scorched;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connection))
             {
                 conn.Open();
                 string query = "UPDATE characters";
                 query += "SET NAME='" + Name + "',X='" + X + "',Y='" + Y + "',z='" + Z + "',direction='" + Direction + "',step='" + Step + "',aim_direction='" + Aim_Direction + "',sprite='" + Sprite + "'";
                 query += "WHERE id='" + id + "';";
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.ExecuteNonQuery();
                 }

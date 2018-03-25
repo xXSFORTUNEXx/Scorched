@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MySql.Data.MySqlClient;
-using MySql.Data;
+using System.Data.SqlClient;
 using Lidgren.Network;
 
 namespace Server.Classes
@@ -71,12 +70,12 @@ namespace Server.Classes
 
         public void CreateAccountInDatabase()
         {
-            string connection = "Server=localhost; Database=scorched; UID=sfortune; Pwd=Fortune123*;";
-            using (MySqlConnection conn = new MySqlConnection(connection))
+            string connection = @"Data Source=FDESKTOP-01\SFORTUNESQL;Initial Catalog=Scorched;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connection))
             {
                 conn.Open();
                 string query = "INSERT INTO accounts (NAME,PASSWORD,last_logged) VALUES ('" + Name + "','" + Password + "', '" + Last_Logged + "')";
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.ExecuteNonQuery();
                 }
@@ -86,15 +85,15 @@ namespace Server.Classes
 
         public void LoadAccountFromDatabase(int id)
         {
-            string connection = "Server=localhost; Database=scorched; UID=sfortune; Pwd=Fortune123*;";
-            using (MySqlConnection conn = new MySqlConnection(connection))
+            string connection = @"Data Source=FDESKTOP-01\SFORTUNESQL;Initial Catalog=Scorched;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connection))
             {
                 conn.Open();
                 string query = "SELECT * FROM accounts WHERE id='" + id + "';";
                 Logging.WriteMessageLog("[DB Query] : " + query);
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
@@ -116,14 +115,14 @@ namespace Server.Classes
 
         public void UpdateCharacterIdsInDatabase()
         {
-            string connection = "Server=localhost; Database=scorched; UID=sfortune; Pwd=Fortune123*;";
-            using (MySqlConnection conn = new MySqlConnection(connection))
+            string connection = @"Data Source=FDESKTOP-01\SFORTUNESQL;Initial Catalog=Scorched;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connection))
             {
                 conn.Open();
                 string query = "UPDATE accounts";
                 query += "SET characterid_1 = '" + Character_Id[0] + "', characterid_2 = '" + Character_Id[1] + "', characterid_3 = '" + Character_Id[2] + "', characterid_4 = '" + Character_Id[3] + "', characterid_5 = '" + Character_Id[4] + "'";
                 query += "WHERE id = '" + Id + "';";
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.ExecuteNonQuery();
                 }
@@ -133,12 +132,12 @@ namespace Server.Classes
 
         public void UpdateAccountInDatabase()
         {
-            string connection = "Server=localhost; Database=scorched; UID=sfortune; Pwd=Fortune123*;";
-            using (MySqlConnection conn = new MySqlConnection(connection))
+            string connection = @"Data Source=FDESKTOP-01\SFORTUNESQL;Initial Catalog=Scorched;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connection))
             {
                 conn.Open();
                 string query = "UPDATE accounts SET NAME='" + Name + "',PASSWORD='" + Password + "',last_logged='" + Last_Logged + "' WHERE id='" + Id + "';";
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.ExecuteNonQuery();
                 }
@@ -148,12 +147,12 @@ namespace Server.Classes
 
         public void UpdatePassword(string new_password)
         {
-            string connection = "Server=localhost; Database=scorched; UID=sfortune; Pwd=Fortune123*;";
-            using (MySqlConnection conn = new MySqlConnection(connection))
+            string connection = @"Data Source=FDESKTOP-01\SFORTUNESQL;Initial Catalog=Scorched;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connection))
             {
                 conn.Open();
                 string query = "UPDATE accounts SET PASSWORD='" + new_password + "' WHERE NAME='" + Name + "'";
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.ExecuteNonQuery();
                 }
@@ -163,16 +162,16 @@ namespace Server.Classes
 
         public int GetIdFromDatabase(string name)
         {
-            string connection = "Server=localhost; Database=scorched; UID=sfortune; Pwd=Fortune123*;";
-            using (MySqlConnection conn = new MySqlConnection(connection))
+            string connection = @"Data Source=FDESKTOP-01\SFORTUNESQL;Initial Catalog=Scorched;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connection))
             {
                 conn.Open();
                 string query = "SELECT * FROM accounts WHERE name='" + name + "';";
                 Logging.WriteMessageLog("[DB Query] : " + query);
                 int id = 0;
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {

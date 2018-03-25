@@ -3,7 +3,7 @@ using Lidgren.Network;
 using static System.Console;
 using static System.Environment;
 using static System.Threading.Thread;
-using MySql.Data.MySqlClient;
+using System.Data.SqlClient;
 
 namespace Server.Classes
 {
@@ -27,7 +27,6 @@ namespace Server.Classes
             g_Config.MaximumConnections = GlobalVariables.MAX_PLAYERS;
             g_Config.EnableUPnP = false;
             g_Config.ConnectionTimeout = 5.0f;
-            Logging.WriteMessageLog("MySQL Connection: " + DatabaseConnection());
             SQLDatabase.DatabaseExists();
             Logging.WriteMessageLog("Starting server...");
             g_Server = new NetServer(g_Config);
@@ -49,28 +48,6 @@ namespace Server.Classes
             Logging.WriteLoglessMessage(@"\__ \/ _|/ _ \| '_|/ _| | ' \ / -_)/ _` |  ", false);
             Logging.WriteLoglessMessage(@"|___/\__|\___/|_|  \__| |_||_|\___|\__,_|  ", false);
             Logging.WriteLoglessMessage("             Created by: Steven M. Fortune  ", false);
-        }
-
-        static bool DatabaseConnection()
-        {
-            string connection = "Server=localhost; Database=scorched; UID=sfortune; Pwd=Fortune123*;";
-            bool sql_Conn = false;
-            using (MySqlConnection conn = new MySqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    if (conn.State == System.Data.ConnectionState.Open)
-                    {
-                        sql_Conn = true;
-                    }
-                }
-                catch
-                {
-                    sql_Conn = false;
-                }
-                return sql_Conn;
-            }
         }
     }
 

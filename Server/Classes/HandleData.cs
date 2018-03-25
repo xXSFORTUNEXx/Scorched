@@ -2,7 +2,7 @@
 using Lidgren.Network;
 using static System.Console;
 using static System.Threading.Thread;
-using MySql.Data.MySqlClient;
+using System.Data.SqlClient;
 
 namespace Server.Classes
 {
@@ -159,15 +159,15 @@ namespace Server.Classes
 
         private static bool AccountExist(string name)
         {
-            string connection = "Server=localhost; Database=scorched; UID=sfortune; Pwd=Fortune123*;";
-            using (MySqlConnection conn = new MySqlConnection(connection))
+            string connection = @"Data Source=FDESKTOP-01\SFORTUNESQL;Initial Catalog=Scorched;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connection))
             {
                 conn.Open();
                 string query = "SELECT * FROM accounts WHERE name='" + name + "'";
                 Logging.WriteMessageLog("[DB Query] : " + query);
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
@@ -185,15 +185,15 @@ namespace Server.Classes
 
         private static bool CheckPassword(string name, string pass)
         {
-            string connection = "Server=localhost; Database=scorched; UID=sfortune; Pwd=Fortune123*;";
-            using (MySqlConnection conn = new MySqlConnection(connection))
+            string connection = @"Data Source=FDESKTOP-01\SFORTUNESQL;Initial Catalog=Scorched;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connection))
             {
                 conn.Open();
                 string query = "SELECT * FROM accounts WHERE name='" + name + "'";
                 Logging.WriteMessageLog("[DB Query] : " + query);
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {

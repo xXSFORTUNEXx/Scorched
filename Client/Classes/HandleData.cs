@@ -13,7 +13,7 @@ namespace Client.Classes
         public void HandleDataMessage(NetClient g_Client, UserInterface g_UserInterface, Account[] accounts)
         {
             NetIncomingMessage incMSG;
-            ipAddress = "10.16.0.2";
+            ipAddress = "10.16.0.8";
             port = 14242;
 
             if ((incMSG = g_Client.ReadMessage()) != null)
