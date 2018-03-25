@@ -36,7 +36,7 @@ namespace Server.Classes
             {
                 conn.Open();
                 string query = "INSERT INTO characters";
-                query += "(NAME,X,Y,z,direction,step,aim_direction,sprite)";
+                query += "(NAME,X,Y,Z,DIRECTION,STEP,AIM_DIRECTION,SPRITE)";
                 query += "VALUES";
                 query += "('" + Name + "','" + X + "','" + Y + "','" + Z + "','" + Direction + "','" + Step + "','" + Aim_Direction + "','" + Sprite + "');";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -82,7 +82,7 @@ namespace Server.Classes
             {
                 conn.Open();
                 string query = "UPDATE characters";
-                query += "SET NAME='" + Name + "',X='" + X + "',Y='" + Y + "',z='" + Z + "',direction='" + Direction + "',step='" + Step + "',aim_direction='" + Aim_Direction + "',sprite='" + Sprite + "'";
+                query += "SET NAME='" + Name + "',X='" + X + "',Y='" + Y + "',Z='" + Z + "',DIRECTION='" + Direction + "',STEP='" + Step + "',AIM_DIRECTION='" + Aim_Direction + "',SPRITE='" + Sprite + "'";
                 query += "WHERE id='" + id + "';";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {

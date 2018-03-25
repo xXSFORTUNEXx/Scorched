@@ -12,7 +12,7 @@ namespace Client.Classes
         public int Id;
         public string Name;
         public string Password;
-        public string Last_Logged;
+        public string Last_Login;
         public NetConnection Server_Connection;
         public int[] Character_Id = new int[GlobalVariables.MAX_CHARACTER_SLOTS];
 
@@ -32,7 +32,7 @@ namespace Client.Classes
             id = Id;
             Name = name;
             Password = password;
-            Last_Logged = last_logged;
+            Last_Login = last_logged;
 
             for (int i = 0; i < 5; i++)
             {

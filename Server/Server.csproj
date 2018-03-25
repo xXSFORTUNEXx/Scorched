@@ -48,7 +48,7 @@
     <Compile Include="Classes\Logging.cs" />
     <Compile Include="Classes\Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Classes\SQLDatabase.cs" />
+    <Compile Include="Classes\MSSQL.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -60,10 +60,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="SQL Scripts\Tables.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="SQL Scripts\Version.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SQL Scripts\Create Database.sql">
+    <Content Include="SQL Scripts\Database.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

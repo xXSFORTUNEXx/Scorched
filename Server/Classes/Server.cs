@@ -27,7 +27,7 @@ namespace Server.Classes
             g_Config.MaximumConnections = GlobalVariables.MAX_PLAYERS;
             g_Config.EnableUPnP = false;
             g_Config.ConnectionTimeout = 5.0f;
-            SQLDatabase.DatabaseExists();
+            MSSQL.DatabaseExists();
             Logging.WriteMessageLog("Starting server...");
             g_Server = new NetServer(g_Config);
             g_Server.Start();

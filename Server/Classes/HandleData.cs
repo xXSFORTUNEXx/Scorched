@@ -112,7 +112,6 @@ namespace Server.Classes
                 {
                     accounts[openPlayerslot].Name = name;
                     accounts[openPlayerslot].Password = password;
-                    accounts[openPlayerslot].Last_Logged = DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString();
                     accounts[openPlayerslot].CreateAccountInDatabase();
                     Logging.WriteMessageLog("Username: " + name + " Password: " + password);
                 }

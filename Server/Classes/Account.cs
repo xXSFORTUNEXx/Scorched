@@ -13,7 +13,7 @@ namespace Server.Classes
         public int Id;
         public string Name;
         public string Password;
-        public string Last_Logged;
+        public string Last_Login;
         public NetConnection Server_Address;
         public int[] Character_Id = new int[GlobalVariables.MAX_CHARACTER_SLOTS];
 
@@ -59,7 +59,7 @@ namespace Server.Classes
             id = Id;
             Name = name;
             Password = password;
-            Last_Logged = last_logged;
+            Last_Login = last_logged;
             Server_Address = server;
 
             for (int i = 0; i < 5; i++)
@@ -74,7 +74,7 @@ namespace Server.Classes
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 conn.Open();
-                string query = "INSERT INTO accounts (NAME,PASSWORD,last_logged) VALUES ('" + Name + "','" + Password + "', '" + Last_Logged + "')";
+                string query = "INSERT INTO accounts (NAME,PASSWORD,LAST_LOGIN,CHAR_1,CHAR_2,CHAR_3,CHAR_4,CHAR_5) VALUES ('" + Name + "','" + Password + "', CURRENT_TIMESTAMP,-1,-1,-1,-1,-1)";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.ExecuteNonQuery();
@@ -100,7 +100,7 @@ namespace Server.Classes
                             Id = reader.GetInt32(0);
                             Name = reader.GetString(1);
                             Password = reader.GetString(2);
-                            Last_Logged = reader.GetString(3);
+                            Last_Login = reader.GetString(3);
                             int n = 4;
                             for (int i = 0; i < 5; i++)
                             {
@@ -120,7 +120,7 @@ namespace Server.Classes
             {
                 conn.Open();
                 string query = "UPDATE accounts";
-                query += "SET characterid_1 = '" + Character_Id[0] + "', characterid_2 = '" + Character_Id[1] + "', characterid_3 = '" + Character_Id[2] + "', characterid_4 = '" + Character_Id[3] + "', characterid_5 = '" + Character_Id[4] + "'";
+                query += "SET CHAR_1 = '" + Character_Id[0] + "', CHAR_2 = '" + Character_Id[1] + "', CHAR_3 = '" + Character_Id[2] + "', CHAR_4 = '" + Character_Id[3] + "', CHAR_5 = '" + Character_Id[4] + "'";
                 query += "WHERE id = '" + Id + "';";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
@@ -136,7 +136,7 @@ namespace Server.Classes
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 conn.Open();
-                string query = "UPDATE accounts SET NAME='" + Name + "',PASSWORD='" + Password + "',last_logged='" + Last_Logged + "' WHERE id='" + Id + "';";
+                string query = "UPDATE accounts SET NAME='" + Name + "',PASSWORD='" + Password + "',LAST_LOGIN=CURRENT_TIMESTAMP WHERE id='" + Id + "';";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.ExecuteNonQuery();
