@@ -74,7 +74,7 @@ namespace Server.Classes
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 conn.Open();
-                string query = "INSERT INTO accounts (NAME,PASSWORD,LAST_LOGIN,CHAR_1,CHAR_2,CHAR_3,CHAR_4,CHAR_5) VALUES ('" + Name + "','" + Password + "', CURRENT_TIMESTAMP,-1,-1,-1,-1,-1)";
+                string query = "INSERT INTO ACCOUNTS (NAME,PASSWORD,LAST_LOGIN,CHAR_1,CHAR_2,CHAR_3,CHAR_4,CHAR_5) VALUES ('" + Name + "','" + Password + "',(SELECT FORMAT(CURRENT_TIMESTAMP, 'yyyy-dd-MM HH:mm:ss.fff', 'en-US')),-1,-1,-1,-1,-1)";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.ExecuteNonQuery();
@@ -89,7 +89,7 @@ namespace Server.Classes
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 conn.Open();
-                string query = "SELECT * FROM accounts WHERE id='" + id + "';";
+                string query = "SELECT * FROM ACCOUNTS WHERE id='" + id + "';";
                 Logging.WriteMessageLog("[DB Query] : " + query);
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
@@ -119,7 +119,7 @@ namespace Server.Classes
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 conn.Open();
-                string query = "UPDATE accounts";
+                string query = "UPDATE ACCOUNTS";
                 query += "SET CHAR_1 = '" + Character_Id[0] + "', CHAR_2 = '" + Character_Id[1] + "', CHAR_3 = '" + Character_Id[2] + "', CHAR_4 = '" + Character_Id[3] + "', CHAR_5 = '" + Character_Id[4] + "'";
                 query += "WHERE id = '" + Id + "';";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -136,7 +136,7 @@ namespace Server.Classes
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 conn.Open();
-                string query = "UPDATE accounts SET NAME='" + Name + "',PASSWORD='" + Password + "',LAST_LOGIN=CURRENT_TIMESTAMP WHERE id='" + Id + "';";
+                string query = "UPDATE ACCOUNTS SET NAME='" + Name + "',PASSWORD='" + Password + "',LAST_LOGIN=(SELECT FORMAT(CURRENT_TIMESTAMP, 'yyyy-dd-MM HH:mm:ss.fff', 'en-US')) WHERE id='" + Id + "';";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.ExecuteNonQuery();
@@ -151,7 +151,7 @@ namespace Server.Classes
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 conn.Open();
-                string query = "UPDATE accounts SET PASSWORD='" + new_password + "' WHERE NAME='" + Name + "'";
+                string query = "UPDATE ACCOUNTS SET PASSWORD='" + new_password + "' WHERE NAME='" + Name + "'";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.ExecuteNonQuery();
@@ -166,7 +166,7 @@ namespace Server.Classes
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 conn.Open();
-                string query = "SELECT * FROM accounts WHERE name='" + name + "';";
+                string query = "SELECT * FROM ACCOUNTS WHERE name='" + name + "'";
                 Logging.WriteMessageLog("[DB Query] : " + query);
                 int id = 0;
                 using (SqlCommand cmd = new SqlCommand(query, conn))
